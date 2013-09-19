@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -18,6 +19,7 @@ public class MyRelationships_Activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myrelationships_layout);
 
+        startService(new Intent(getBaseContext(), ListenerService.class));
         // Initiate Actionbar
         ActionBar actionbar = getActionBar();
 
