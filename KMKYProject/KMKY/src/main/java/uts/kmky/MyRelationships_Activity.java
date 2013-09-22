@@ -3,16 +3,13 @@ package uts.kmky;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
-import android.widget.Toast;
 
 public class MyRelationships_Activity extends Activity {
-
-    public static Context appContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +17,7 @@ public class MyRelationships_Activity extends Activity {
         setContentView(R.layout.myrelationships_layout);
 
         startService(new Intent(getBaseContext(), ListenerService.class));
+
         // Initiate Actionbar
         ActionBar actionbar = getActionBar();
 
@@ -33,7 +31,7 @@ public class MyRelationships_Activity extends Activity {
 
         // Create the three fragments that we want to use for displaying content
         Fragment MyRelationships = new MyRelationshipsFragment();
-        Fragment Favorites = new FavoritesFragment();
+        ListFragment Favorites = new FavoritesFragment();
         Fragment Find = new FindFragment();
 
         // Set tab listener so we are able to listen for clicks
@@ -55,9 +53,6 @@ public class MyRelationships_Activity extends Activity {
         return true;
     }
 
-
-
-
     public class MyTabsListener implements ActionBar.TabListener{
 
         public Fragment fragment;
@@ -76,6 +71,7 @@ public class MyRelationships_Activity extends Activity {
 
         @Override
         public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+
             ft.replace(R.id.fragment_container, fragment);
         }
 
@@ -83,6 +79,6 @@ public class MyRelationships_Activity extends Activity {
         public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
             ft.remove(fragment);
         }
-    
 }
+
 }

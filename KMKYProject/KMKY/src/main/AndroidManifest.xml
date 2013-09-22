@@ -26,17 +26,13 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".ListenerService" >
-
+        <service android:name="uts.kmky.ListenerService" >
             <intent-filter>
-
-                <action android:name="(android.telephony.TelephonyManager.ACTION_PHONE_STATE_CHANGED"></action>
-
+                <action android:name="(android.telephony.TelephonyManager.ACTION_PHONE_STATE_CHANGED" />
             </intent-filter>
-
         </service>
 
-        <receiver android:name=".StartUpReciever">
+        <receiver android:name="uts.kmky.StartUpReciever" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
