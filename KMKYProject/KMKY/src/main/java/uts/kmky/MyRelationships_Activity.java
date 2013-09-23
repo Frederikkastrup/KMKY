@@ -19,12 +19,7 @@ public class MyRelationships_Activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myrelationships_layout);
 
-        //Starting the listnerservice when app starts
         startService(new Intent(getBaseContext(), ListenerService.class));
-
-        MySQLiteHelper helper = new MySQLiteHelper(appContext);
-
-
         // Initiate Actionbar
         ActionBar actionbar = getActionBar();
 
