@@ -20,8 +20,8 @@ public class DataModel {
     private  DataModel()
     {
 
-      MySQLiteHelper dbHelper = new MySQLiteHelper(ctx);
-      dbHelper.getWritableDatabase();
+      //MySQLiteHelper dbHelper = new MySQLiteHelper(ctx);
+      //dbHelper.getWritableDatabase();
 
 
 
@@ -29,7 +29,7 @@ public class DataModel {
       //Load data into logs
 
 
-      dbHelper.close();
+      //dbHelper.close();
     }
 
     public static DataModel getInstance()
@@ -47,6 +47,7 @@ public class DataModel {
     // .....................Operations on the database ............ //
     //Add log, update, list logs
     //InsertOrUpdate
+    //FetchAllFromDateToDate
 
     //A
 
@@ -64,19 +65,26 @@ public class DataModel {
         //Check if log exists or create it.
 
         Log newLog = new Log(phonenumber, type, date, incoming, outgoing);
-        logs.add(newLog);
+
+        if (logs.contains(newLog))
+        {
+            updateLog(newLog);
+        }
+        else {logs.add(newLog);}
 
 
 
         //Add to database
     }
 
-    public void updateLog(String phonenumber, String type, long date, int incoming, int outgoing)
+    public void updateLog(Log newlog)
     {
         //Check for phonenumber, type and date
         //check for outgoing or incoming
 
-        //increment value at that index. 
+        //increment value at that index.
+
+        //Add to Database
     }
 
     public void fetchLog()

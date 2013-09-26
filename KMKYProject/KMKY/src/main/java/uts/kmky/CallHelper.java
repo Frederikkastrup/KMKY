@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -38,10 +39,12 @@ public class CallHelper {
         public void onCallStateChanged(int state, String incomingNumber) {
             switch (state) {
                 case TelephonyManager.CALL_STATE_RINGING:
-                    // called when someone is ringing to this phone
+                    // called when someone is calling this phone
 
                     Date now = new Date();
                     String CurrentTime = new SimpleDateFormat("yyyy-MM-dd").format(now);
+                    long timeMilliseconds = now.getTime();
+
 
                     //Sorting away 0
                     incomingNumber = incomingNumber.substring(1, incomingNumber.length());
@@ -53,6 +56,11 @@ public class CallHelper {
 
                     //Toast message showing the date of the incoming call
                     Toast.makeText(ctx, "Time: " + CurrentTime, Toast.LENGTH_LONG).show();
+
+                    MySQLiteHelper.getInstance(ctx).addLog(incomingNumber, "call", timeMilliseconds, 1, 0);
+
+
+
                     break;
 
 

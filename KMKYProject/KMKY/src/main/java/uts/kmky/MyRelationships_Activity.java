@@ -23,6 +23,8 @@ public class MyRelationships_Activity extends Activity {
         // Initiate Actionbar
         ActionBar actionbar = getActionBar();
 
+
+
         // Set ActionBar to use tabs
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
