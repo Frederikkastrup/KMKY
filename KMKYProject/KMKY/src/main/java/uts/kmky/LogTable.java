@@ -28,13 +28,12 @@ public class LogTable {
 
     //Database creation SQL statement
     public static final String DATABASE_CREATE = "CREATE TABLE "
-            + TABLE_NAME + "(" + COLUMN_ID + " INTEGER AUTOINCREMENT, "
+            + TABLE_NAME + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_PHONENUMBER + " TEXT, "
             + COLUMN_TYPE + " TEXT, "
             + COLUMN_DATE + " INTEGER, "
             + COLUMN_INCOMING + " INTEGER, "
-            + COLUMN_OUTGOING + " INTEGER, "
-            + "PRIMARY KEY (" + COLUMN_PHONENUMBER + "," + COLUMN_TYPE + "," + COLUMN_DATE + "));";
+            + COLUMN_OUTGOING + " INTEGER);";
 
 
 

@@ -57,7 +57,7 @@ public class CallHelper {
                     //Toast message showing the date of the incoming call
                     Toast.makeText(ctx, "Time: " + CurrentTime, Toast.LENGTH_LONG).show();
 
-                    MySQLiteHelper.getInstance(ctx).addLog(incomingNumber, "call", timeMilliseconds, 1, 0);
+
 
 
 

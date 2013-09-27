@@ -17,15 +17,15 @@ public class DataModel {
     private static Context ctx;
 
     //Singleton constructor
-    private  DataModel()
+    private DataModel()
     {
 
-      //MySQLiteHelper dbHelper = new MySQLiteHelper(ctx);
-      //dbHelper.getWritableDatabase();
+      MySQLiteHelper dbHelper = new MySQLiteHelper(ctx);
+      dbHelper.getWritableDatabase();
 
 
 
-      //Create lists
+
       //Load data into logs
 
 
@@ -42,55 +42,157 @@ public class DataModel {
         return instance;
     }
 
-
-
-    // .....................Operations on the database ............ //
-    //Add log, update, list logs
-    //InsertOrUpdate
-    //FetchAllFromDateToDate
-
-    //A
-
-
-
-
-
-
     // .................... Public Methods ........................ //
 
-    //Add logs, update logs / list of logs
 
     public void addLog(String phonenumber, String type, long date, int incoming, int outgoing)
     {
-        //Check if log exists or create it.
-
+        //Check if log exists or else create it.
         Log newLog = new Log(phonenumber, type, date, incoming, outgoing);
 
-        if (logs.contains(newLog))
+        //Iterates through logs
+        for (Log log : logs)
         {
-            updateLog(newLog);
+            if (log.getPhonenumber() == phonenumber && log.getDate() == date && log.getType() == type)
+            {
+                updateLog(newLog, log.getId());
+            }
+            else
+            {
+
+                logs.add(newLog);
+                //add to database
+            }
         }
-        else {logs.add(newLog);}
 
 
 
+
+    }
+
+    public void updateLog(Log newLog, long id)
+    {
+
+        //check for outgoing or incoming
+        if (newLog.getIncoming() == 1)
+        {
+            for (Log log : logs)
+            {
+                if (log.getId() == id)
+                {
+                    //Increments incoming
+                    int incoming = log.getIncoming();
+
+                    log.setIncoming(incoming++);
+                }
+                else
+                {
+                    //Increments outgoing
+                    int outgoing = log.getOutgoing();
+
+                    log.setOutgoing(outgoing++);
+                }
+            }
+        }
+
+
+        //Update the list
         //Add to database
     }
 
-    public void updateLog(Log newlog)
-    {
-        //Check for phonenumber, type and date
-        //check for outgoing or incoming
-
-        //increment value at that index.
-
-        //Add to Database
-    }
-
-    public void fetchLog()
+    //Gets the sms log for that date for that specific person. Else returns an empty log
+    public Log fetchSMSLogsForPeronOnSpecificDate(String phonenumber, long date)
     {
 
+        Log emptyLog = new Log(phonenumber, "sms", date, 0, 0);
+
+        for (Log log : logs)
+        {
+            if (log.getPhonenumber() == phonenumber && log.getDate() == date && log.getType() == "sms")
+            {
+                return log;
+            }
+        }
+
+        return emptyLog;
     }
 
+    //Gets the call log for that date for that specific person. Else returns an empty log
+    public Log fetchCallLogsForPeronOnSpecificDate(String phonenumber, long date)
+    {
+        Log emptyLog = new Log(phonenumber, "call", date, 0, 0);
+
+        for (Log log : logs)
+        {
+            if (log.getPhonenumber() == phonenumber && log.getDate() == date && log.getType() == "sms")
+            {
+                return log;
+            }
+
+        }
+
+        return emptyLog;
+
+    }
+
+    public Log fetchSMSLogsForPersonToDate(String phonenumber, long date)
+    {
+        int incoming = 0;
+        int outgoing = 0;
+        String type = "sms";
+
+        for (Log log : logs)
+        {
+            if (log.getPhonenumber() == phonenumber && log.getType() == "sms")
+            {
+                incoming = incoming + log.getIncoming();
+                outgoing = outgoing + log.getOutgoing();
+            }
+        }
+
+        Log logToDate = new Log(phonenumber, type, date, incoming, outgoing );
+
+        return logToDate;
+    }
+
+    public Log fetchCallLogsForPersonToDate(String phonenumber, long date)
+    {
+        int incoming = 0;
+        int outgoing = 0;
+        String type = "call";
+
+        for (Log log : logs)
+        {
+            if (log.getPhonenumber() == phonenumber && log.getType() == "call")
+            {
+                incoming = incoming + log.getIncoming();
+                outgoing = outgoing + log.getOutgoing();
+            }
+        }
+
+        Log logToDate = new Log(phonenumber, type, date, incoming, outgoing );
+
+        return logToDate;
+    }
+
+    public void fetchLogsForLeastContacted()
+    {
+
+    }
+
+    public void fetchLogsForMostContacted()
+    {
+
+    }
+
+    public void fetchLogsForLeastContactedYou()
+    {
+
+    }
+
+    public void fetchLogsForMostContactedYou()
+    {
+
+    }
 
 }

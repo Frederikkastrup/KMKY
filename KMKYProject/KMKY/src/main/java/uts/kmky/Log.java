@@ -11,9 +11,10 @@ public class Log {
     private long date;
     private int incoming;
     private int outgoing;
+    private long id;
 
     //Constructor for incoming sms or call
-    public Log(String Phonenumber, String Type, long Date, int Incoming, int Outgoing)
+    public Log( String Phonenumber, String Type, long Date, int Incoming, int Outgoing)
     {
 
         this.phonenumber = Phonenumber;
@@ -24,7 +25,15 @@ public class Log {
     }
 
 
+    public long getId()
+    {
+        return id;
+    }
 
+    public void setId(long id)
+    {
+        this.id = id;
+    }
 
     public String getPhonenumber()
     {
