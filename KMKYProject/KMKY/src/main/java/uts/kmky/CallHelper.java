@@ -11,6 +11,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,13 +23,13 @@ public class CallHelper {
     private Context ctx;
     private TelephonyManager tm;
     private IncomingCalls callStateListener;
-    private OutgoingCalls outgoingReceiver;
+    private outGoingCalls outgoingReceiver;
 
     public CallHelper(Context ctx) {
         this.ctx = ctx;
 
         callStateListener = new IncomingCalls();
-        outgoingReceiver = new OutgoingCalls();
+        outgoingReceiver = new outGoingCalls();
     }
 
 
@@ -41,65 +42,60 @@ public class CallHelper {
                 case TelephonyManager.CALL_STATE_RINGING:
                     // called when someone is calling this phone
 
-                    Date now = new Date();
-                    String CurrentTime = new SimpleDateFormat("yyyy-MM-dd").format(now);
-                    long timeMilliseconds = now.getTime();
 
+                    String subString = incomingNumber.substring(0, 3);
 
-                    //Sorting away 0
-                    incomingNumber = incomingNumber.substring(1, incomingNumber.length());
+                    Log.i("CallHelper", "Calling: " + subString);
 
-                    Log.i ("CallListner", "Caller: " + incomingNumber);
+                    if (subString.equals("+61"))
+                    {
+                        incomingNumber = incomingNumber.substring(3, incomingNumber.length());
+                    }
 
-                    //Toast message showing the phone number calling you
-                    Toast.makeText(ctx,"Incoming Call From: "+incomingNumber,Toast.LENGTH_LONG).show();
+                    Log.i ("CallHelper", "Caller: " + incomingNumber);
 
-                    //Toast message showing the date of the incoming call
-                    Toast.makeText(ctx, "Time: " + CurrentTime, Toast.LENGTH_LONG).show();
+                    long timeInMilliseconds = getTime();
+                    
+                    
 
-
-
-
+                    DataModel.getInstance().addLog(incomingNumber, "call", timeInMilliseconds, 1, 0);
 
                     break;
-
-
             }
         }
     }
 
     //Listens for outgoing calls
-    public class OutgoingCalls extends BroadcastReceiver
+    public class outGoingCalls extends BroadcastReceiver
     {
-        public OutgoingCalls(){}
+        public outGoingCalls(){}
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String OutGoingnumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
+        String outgoingNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 
-        Date now = new Date();
-        String CurrentTime = new SimpleDateFormat("yyyy-MM-dd").format(now);
-
-        //Sorting away 0
-        OutGoingnumber = OutGoingnumber.substring(1, OutGoingnumber.length());
+        //Getting the time
+        long timeMilliseconds = getTime();
 
 
-        Log.i ("CallBroadcast", "Calling: " + OutGoingnumber);
 
-        //Toast message showing the phone number you are calling
-        Toast.makeText(ctx, "Outgoing: " + OutGoingnumber, Toast.LENGTH_LONG).show();
+      //Sorting away 0
+      String subString = outgoingNumber.substring(0, 3);
 
-        //Toast message showing the date of the outgoing call
-        Toast.makeText(ctx, "Time: " + CurrentTime, Toast.LENGTH_LONG).show();
+      Log.i("CallHelper", "Calling: " + subString);
 
+      if (subString.equals("+61"))
+      {
+          outgoingNumber = outgoingNumber.substring(3, outgoingNumber.length());
+      }
+
+      Log.i("CallHelper", "Calling: " + outgoingNumber);
+
+        DataModel.getInstance().addLog(outgoingNumber, "call", timeMilliseconds, 0, 1);
 
     }
 
-
-
 }
-
-
 
     //Sets the BroadcastReciever and Telephonymanager
     public void start() {
@@ -108,6 +104,29 @@ public class CallHelper {
 
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_NEW_OUTGOING_CALL);
         ctx.registerReceiver(outgoingReceiver, intentFilter);
+    }
+
+    public long getTime()
+    {
+        Date now = new Date();
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(now);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date date = null;
+
+        try {
+            date = dateFormat.parse(timeStamp);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        long timeMilliseconds = date.getTime();
+        Log.i("CallHelper", String.valueOf(timeMilliseconds));
+
+
+        return timeMilliseconds;
+
     }
 
 }
